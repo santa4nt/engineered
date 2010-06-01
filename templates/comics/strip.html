@@ -19,7 +19,16 @@
 <br />
 <br />
 
+{% if strip.strip %}
 <img class="strip" src="{{ strip.strip.url }}" title="{{ strip.alt_text }}" alt="{{ strip.title }}" />
+{% else %}{% if strip.external %}
+<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="{{ strip.external }}">
+    <param name="movie" value="{{ strip.external }}" />
+</object>
+{% else %}
+<p>There does not seem to be any resource related to this strip.</p>
+{% endif %}
+{% endif %}
 
 <div class="social">
   <ul>
@@ -49,7 +58,9 @@
 <br />
 
 <h3>Permanent link to this comic: {{ permalink }}</h3>
+{% if strip.strip %}
 <h3>Image URL: {{ strip.strip.url }}</h3>
+{% endif %}
 
 <br />
 <p> <a href="{% url feeds_view url="latest" %}">RSS feeds</a></p>
