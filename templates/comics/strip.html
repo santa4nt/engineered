@@ -1,4 +1,5 @@
 {% extends "comics/base.html" %}
+{% load embed %}
 
 {% block title %}Engineered - {{ strip.title }}{% endblock %}
 
@@ -21,13 +22,10 @@
 
 {% if strip.strip %}
 <img class="strip" src="{{ strip.strip.url }}" title="{{ strip.alt_text }}" alt="{{ strip.title }}" />
-{% else %}{% if strip.external %}
-<object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="{{ strip.external }}">
-    <param name="movie" value="{{ strip.external }}" />
-</object>
-{% else %}
-<p>There does not seem to be any resource related to this strip.</p>
 {% endif %}
+
+{% if strip.external %}
+{% autoescape off %}{{ strip.external|youtube }}{% endautoescape %}
 {% endif %}
 
 <div class="social">
