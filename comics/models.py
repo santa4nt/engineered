@@ -6,7 +6,8 @@ class Strip(models.Model):
     title    = models.CharField(max_length=256)
     alt_text = models.CharField(max_length=256)
     sub_date = models.DateField('submission date')
-    strip    = models.FileField(upload_to='strips')
+    strip    = models.FileField(upload_to='strips', blank=True)
+    external = models.URLField(blank=True)
 
     class Meta:
         get_latest_by = 'sub_date'

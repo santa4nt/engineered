@@ -1,4 +1,5 @@
 {% extends "comics/base.html" %}
+{% load embed %}
 
 {% block title %}Engineered - {{ strip.title }}{% endblock %}
 
@@ -19,7 +20,13 @@
 <br />
 <br />
 
+{% if strip.strip %}
 <img class="strip" src="{{ strip.strip.url }}" title="{{ strip.alt_text }}" alt="{{ strip.title }}" />
+{% endif %}
+
+{% if strip.external %}
+{% autoescape off %}{{ strip.external|youtube }}{% endautoescape %}
+{% endif %}
 
 <div class="social">
   <ul>
@@ -49,7 +56,9 @@
 <br />
 
 <h3>Permanent link to this comic: {{ permalink }}</h3>
+{% if strip.strip %}
 <h3>Image URL: {{ strip.strip.url }}</h3>
+{% endif %}
 
 <br />
 <p> <a href="{% url feeds_view url="latest" %}">RSS feeds</a></p>
