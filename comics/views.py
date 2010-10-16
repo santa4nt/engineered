@@ -1,8 +1,11 @@
-from django.http import Http404
+import random as rand
+
+from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+
 from engineered.comics.models import Strip
-import random as rand
 
 # Each of these view callback can do whatever we want, as long as a
 # HttpResponse is returned or a Http404 is raised.
@@ -16,10 +19,7 @@ def latest(request):
     except IndexError:
         raise Http404('No comic strip in the database.')
 
-    return render_to_response('comics/strip.html', 
-            _build_context(latest_strip),
-            context_instance=RequestContext(request,
-            {'permalink': request.build_absolute_uri(latest_strip.get_absolute_url())}))
+    return HttpResponseRedirect(reverse('strip_view', args=(latest_strip.id,)))
 
 def strip(request, strip_id):
     """Respond to page request for a specific strip."""
@@ -35,7 +35,7 @@ def random(request):
     count = Strip.objects.count()
     which = int(rand.random() * count) + 1
 
-    return strip(request, which)
+    return HttpResponseRedirect(reverse('strip_view', args=(which,)))
 
 def archive(request):
     """Serve a list of strip titles and links in the database."""
